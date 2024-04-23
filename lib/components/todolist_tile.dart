@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ToDoListTile extends StatelessWidget {
-  const ToDoListTile({super.key});
+  final String taskString;
+  final bool isChecked;
+  final Function() onPressedSettings;
+  final Function() onPressedDelete;
+
+  const ToDoListTile({
+    super.key,
+    required this.taskString,
+    required this.isChecked,
+    required this.onPressedSettings,
+    required this.onPressedDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,24 +33,32 @@ class ToDoListTile extends StatelessWidget {
             Row(
               children: [
                 Checkbox(
-                  value: true,
+                  value: isChecked,
                   onChanged: (value) {},
                   activeColor: Colors.grey[800],
                 ),
-                Text('Hello, world!'),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  taskString,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ],
             ),
             Column(
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: onPressedSettings,
                   icon: Icon(
-                    Icons.create,
+                    Icons.settings,
                     size: 20,
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: onPressedDelete,
                   icon: Icon(
                     Icons.delete,
                     size: 20,
