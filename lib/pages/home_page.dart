@@ -88,6 +88,12 @@ class _HomePageState extends State<HomePage> {
                 return ToDoListTile(
                   onPressedSettings: () => openDialogBox(docID: doc.id),
                   onPressedDelete: () => tasks.deleteTask(doc.id),
+                  onChanged: () {
+                    tasks.updateTaskState(
+                      doc.id,
+                      !doc['isChecked'],
+                    );
+                  },
                   taskString: doc['task'],
                   isChecked: doc['isChecked'],
                 );
@@ -96,11 +102,20 @@ class _HomePageState extends State<HomePage> {
           }
           else {
             return Center(
-              child: Text(
-                'Loading Data...',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.create,
+                    size: 50,
+                  ),
+                  Text(
+                    'Loading...',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )
+                ],
               ),
             );
           }

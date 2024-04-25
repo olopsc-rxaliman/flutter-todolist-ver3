@@ -25,6 +25,12 @@ class FirestoreService {
     });
   }
 
+  Future updateTaskState(String docID, bool checked) {
+    return tasks.doc(docID).update({
+      'isChecked': checked,
+    });
+  }
+
   // Delete
   Future deleteTask(String docID) => tasks.doc(docID).delete();
 }

@@ -5,6 +5,7 @@ class ToDoListTile extends StatelessWidget {
   final bool isChecked;
   final Function() onPressedSettings;
   final Function() onPressedDelete;
+  final Function() onChanged;
 
   const ToDoListTile({
     super.key,
@@ -12,6 +13,7 @@ class ToDoListTile extends StatelessWidget {
     required this.isChecked,
     required this.onPressedSettings,
     required this.onPressedDelete,
+    required this.onChanged,
   });
 
   @override
@@ -34,7 +36,9 @@ class ToDoListTile extends StatelessWidget {
               children: [
                 Checkbox(
                   value: isChecked,
-                  onChanged: (value) {},
+                  onChanged: (_) {
+                    onChanged();
+                  },
                   activeColor: Colors.grey[800],
                 ),
                 SizedBox(
