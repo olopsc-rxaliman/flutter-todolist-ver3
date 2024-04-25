@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todolist/components/todolist_tile.dart';
 import 'package:todolist/services/firebase.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,17 +27,21 @@ class _HomePageState extends State<HomePage> {
         ),
         content: TextField(
           controller: textEditingController,
+          autofocus: true,
         ),
         actions: [
           ElevatedButton(
-            onPressed: docID == null
-            ? () {
-              tasks.addTask(textEditingController.text);
-              Navigator.pop(context);
-              textEditingController.clear();
-            }
-            : () {
-              tasks.updateTask(docID, textEditingController.text);
+            onPressed: () {
+              if (docID == null && textEditingController.text.trim() != '')
+                tasks.addTask(textEditingController.text.trim());
+              else {
+                if (textEditingController.text.trim() == '') {
+                  tasks.deleteTask(docID);
+                }
+                else {
+                  tasks.updateTask(docID, textEditingController.text.trim());
+                }
+              }
               Navigator.pop(context);
               textEditingController.clear();
             },
@@ -57,8 +62,8 @@ class _HomePageState extends State<HomePage> {
         title: Row(
           children: [
             Icon(
-              Icons.create,
-              size: 20,
+              Icons.checklist_sharp,
+              size: 25,
             ),
             SizedBox(
               width: 10,
@@ -67,6 +72,7 @@ class _HomePageState extends State<HomePage> {
               'TO-DO LIST',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
           ],
@@ -86,7 +92,10 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 DocumentSnapshot doc = tasksList[index];
                 return ToDoListTile(
-                  onPressedSettings: () => openDialogBox(docID: doc.id),
+                  onPressedSettings: () {
+                    textEditingController.value = TextEditingValue(text: doc['task']);
+                    openDialogBox(docID: doc.id);
+                  },
                   onPressedDelete: () => tasks.deleteTask(doc.id),
                   onChanged: () {
                     tasks.updateTaskState(
@@ -102,20 +111,9 @@ class _HomePageState extends State<HomePage> {
           }
           else {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.create,
-                    size: 50,
-                  ),
-                  Text(
-                    'Loading...',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  )
-                ],
+              child: SpinKitWaveSpinner(
+                color: Colors.black87,
+                size: 80.0,
               ),
             );
           }
@@ -123,11 +121,12 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.yellow,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.black87,
         onPressed: () {
+          textEditingController.clear();
           openDialogBox();
         },
-        child: Icon(Icons.create),
+        child: Icon(Icons.add),
       ),
     );
   }

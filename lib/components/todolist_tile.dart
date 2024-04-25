@@ -36,9 +36,7 @@ class ToDoListTile extends StatelessWidget {
               children: [
                 Checkbox(
                   value: isChecked,
-                  onChanged: (_) {
-                    onChanged();
-                  },
+                  onChanged: (_) => onChanged(),
                   activeColor: Colors.grey[800],
                 ),
                 SizedBox(
@@ -57,7 +55,7 @@ class ToDoListTile extends StatelessWidget {
                 IconButton(
                   onPressed: onPressedSettings,
                   icon: Icon(
-                    Icons.settings,
+                    Icons.create,
                     size: 20,
                   ),
                 ),

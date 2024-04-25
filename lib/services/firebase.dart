@@ -19,18 +19,18 @@ class FirestoreService {
   ).snapshots();
 
   // Update
-  Future updateTask(String docID, String task) {
+  Future updateTask(String? docID, String task) {
     return tasks.doc(docID).update({
       'task': task,
     });
   }
 
-  Future updateTaskState(String docID, bool checked) {
+  Future updateTaskState(String? docID, bool checked) {
     return tasks.doc(docID).update({
       'isChecked': checked,
     });
   }
 
   // Delete
-  Future deleteTask(String docID) => tasks.doc(docID).delete();
+  Future deleteTask(String? docID) => tasks.doc(docID).delete();
 }
